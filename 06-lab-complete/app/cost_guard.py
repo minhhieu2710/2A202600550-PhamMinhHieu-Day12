@@ -1,11 +1,12 @@
 import redis
 from datetime import datetime
-from fastapi import HTTPException, status
+from fastapi import Depends, HTTPException, status
 from .config import settings
+from .auth import verify_api_key
 
 r = redis.from_url(settings.REDIS_URL)
 
-async def check_budget(user_id: str):
+async def check_budget(user_id: str = Depends(verify_api_key)):
     month_key = datetime.now().strftime("%Y-%m")
     key = f"budget:{user_id}:{month_key}"
     

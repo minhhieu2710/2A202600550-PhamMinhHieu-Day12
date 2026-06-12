@@ -1,6 +1,10 @@
-# Lab 12 — Complete Production Agent
+# Production-Ready AI Agent (Day 12 Lab)
 
-Kết hợp TẤT CẢ những gì đã học trong 1 project hoàn chỉnh.
+Đây là dự án hoàn chỉnh kết hợp tất cả các tiêu chuẩn triển khai chuyên nghiệp cho một AI Agent, bao gồm đóng gói Docker tối ưu, bảo mật API, khả năng mở rộng Stateless và vận hành tin cậy.
+
+**Thông tin sinh viên:**
+- Họ và tên: Phạm Minh Hiếu
+- MSSV: 2A202600550
 
 ## Checklist Deliverable
 
@@ -44,13 +48,21 @@ Kết hợp TẤT CẢ những gì đã học trong 1 project hoàn chỉnh.
 
 ```bash
 # 1. Setup
-cp .env.example .env
+copy .env.example .env
 
 # 2. Chạy với Docker Compose
 docker compose up
 
 # 3. Test
-curl http://localhost/health
+curl http://localhost:80/health
+```
+
+## Các tính năng đã triển khai
+- **Stateless Architecture**: Lưu trữ lịch sử chat và budget trong Redis, hỗ trợ scale ngang.
+- **Security**: Xác thực qua API Key, giới hạn tốc độ (Rate Limiting) và kiểm soát chi phí (Cost Guard).
+- **Reliability**: Health/Readiness checks và xử lý tín hiệu SIGTERM (Graceful Shutdown).
+- **Optimization**: Docker image nhỏ gọn (<200MB) sử dụng multi-stage build và chạy dưới quyền non-root user.
+- **Monitoring**: Hệ thống Log định dạng JSON chuẩn Production.
 
 # 4. Lấy API key từ .env, test endpoint
 API_KEY=$(grep AGENT_API_KEY .env | cut -d= -f2)

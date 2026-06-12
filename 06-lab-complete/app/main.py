@@ -47,6 +47,15 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(lifespan=lifespan)
 
+# Thêm route gốc để tránh lỗi "Not Found" khi truy cập link trực tiếp
+@app.get("/")
+def root():
+    return {
+        "message": "AI Agent Production API is running",
+        "endpoints": ["/health", "/ready", "/ask (POST)"],
+        "docs": "/docs"
+    }
+
 # Xử lý SIGTERM cho chuẩn Production
 def handle_sigterm(*args):
     logger.info("Received SIGTERM signal")
@@ -67,7 +76,6 @@ def ready():
 @app.post("/ask")
 async def ask_endpoint(
     payload: dict,
-    user_id: str = Depends(verify_api_key),
     _rate: None = Depends(check_rate_limit),
     _cost: None = Depends(check_budget)
 ):
